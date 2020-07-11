@@ -21,3 +21,5 @@ urlpatterns = [
     path('blog/', include('blog.urls', namespace='blog')),
 ]
 
+
+# url patterns here will be inherited by the url patterns found in each microsite

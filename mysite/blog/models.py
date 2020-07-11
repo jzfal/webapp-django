@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
-
+from taggit.managers import TaggableManager
 class PublishedManager(models.Manager):
     """
     add the custom manager to the Post class 
@@ -36,6 +36,8 @@ class Post(models.Model):
                             default='draft')
     objects = models.Manager() # the default manager
     published = PublishedManager() # our custom manager
+    tags = TaggableManager() # to set tags in post. allows us to add, retrieve and remove tags from Post object
+
 
     class Meta:
         ordering = ('-publish',)
@@ -54,5 +56,20 @@ class Post(models.Model):
                         self.publish.day,
                         self.slug])
  
+ 
+class Comment(models.Model):
+    post = models.ForeignKey(Post,
+                             on_delete=models.CASCADE,
+                             related_name='comments') # related name allows for back ref
+    name = models.CharField(max_length=80)
+    email = models.EmailField()
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True) # manually deactivate inappropriate comments
 
+    class Meta:
+        ordering = ('created',)
 
+    def __str__(self):
+        return f'Comment by {self.name} on {self.post}'

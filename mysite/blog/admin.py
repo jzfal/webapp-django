@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Post  # .models state it as relative path, in curr dir
+from .models import Post, Comment  # .models state it as relative path, in curr dir
 # Register your models here.
-import random
+# import random
 
 # admin.site.register(Post) # register model --> generate UI to list, edit, create and delete objects 
 
@@ -17,4 +17,9 @@ class PostAdmin(admin.ModelAdmin):
     date_hierarchy = 'publish'
     ordering = ('status','publish')
 
-  
+@admin.register(Comment) # Comment model is registered in the site using a custom class that inherits from ModelAdmin.
+class CommentAdmin(admin.ModelAdmin):
+    # includes information about how to display the model in the site and how to interact with it. 
+    list_display = ('name', 'email', 'post', 'created', 'active')
+    list_filter = ('active', 'created', 'updated')
+    search_fields = ('name', 'email', 'body')
