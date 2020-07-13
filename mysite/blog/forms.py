@@ -22,3 +22,5 @@ class CommentForm(forms.ModelForm):
         fields = ('name', 'email', 'body') # can add in a fields list or an exclude list
 
         
+class SearchForm(forms.Form):
+    query = forms.CharField()

@@ -4,3 +4,6 @@ venv1/
 
 ## ignore pycache
 *.pyc
+
+## ignore settings.py
+
